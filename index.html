@@ -304,6 +304,15 @@ h3{font-size:17px;font-weight:700}
 .gate button{width:100%;font:800 17px inherit;font-family:inherit;background:#22d3ee;color:#06222a;border:0;
   border-radius:12px;padding:14px;cursor:pointer;margin-top:12px}
 .gate .err{color:#f87171;font-size:14px;margin-top:12px;display:none}
+
+/* guest: tabs pop */
+.tab{font-size:15.5px!important;font-weight:800!important;padding:12px 20px!important;border-radius:12px!important}
+.tab[data-tab="portfolio"]{color:#22d3ee!important;border:2px solid rgba(34,211,238,.55)!important}
+.tab[data-tab="intel"]{color:#a78bfa!important;border:2px solid rgba(167,139,250,.55)!important}
+.tab[data-tab="hot"]{color:#4ade80!important;border:2px solid rgba(74,222,128,.55)!important}
+.tab.on[data-tab="portfolio"]{background:rgba(34,211,238,.15)!important}
+.tab.on[data-tab="intel"]{background:rgba(167,139,250,.15)!important}
+.tab.on[data-tab="hot"]{background:rgba(74,222,128,.15)!important}
 </style>
 
 <div class="gate" id="gate">
@@ -319,11 +328,8 @@ h3{font-size:17px;font-weight:700}
 <div class="wrap hidden" id="app">
 
   <h1>The Waldo Crypto Report <span style="color:var(--ink3);font-weight:600">— <span data-live="date"></span></span></h1>
-  <p class="sub"><b style="color:var(--green-b)">What is this?</b> Every morning an AI system reads our crypto
-  sources — a paid advisory (CCI), analysts we trust like Ben Cowen, and 110 hand-picked Twitter
-  accounts — and rebuilds this page around one question:
-  <b style="color:var(--green-b)">"what should you do with $1,000,000 today — and why?"</b>
-  Tab 1 is the answer. Tab 2 is the evidence behind it. Click any <b>?</b> for a plain-English explanation.</p>
+  <div class="fresh" id="freshTop" style="margin:10px 0 12px"></div>
+  <p class="sub"><b style="color:var(--green-b)">What is this?</b> Every morning our AI reads the crypto sources we trust — paid research, top analysts, and 110 hand-picked Twitter accounts — and answers one question: <b style="color:var(--green-b)">what should you do with $1,000,000 today — and why?</b> Tab 1 is the answer. Tab 2 shows the numbers behind it. Tab 3 shows what Twitter is talking about. Tap any <b>?</b> for a plain-English explanation.</p>
 
   <div class="tabs" id="tabs"></div>
 
@@ -336,7 +342,7 @@ h3{font-size:17px;font-weight:700}
       <div class="verdict"><span class="big" id="vIcon">⏸️</span><div id="vBody"></div></div>
       <div class="scorerow" id="scores"></div>
       <div class="datanote" id="summaryNote"></div>
-      <div class="fresh" id="fresh"></div>
+      
     </div>
 
     <div class="step s1">
@@ -735,7 +741,7 @@ document.addEventListener('click', e => {
 
   $('summaryNote').style.display='none';
 
-  if ($('fresh') && DATA.freshness) $('fresh').innerHTML =
+  if ($('freshTop') && DATA.freshness) $('freshTop').innerHTML =
     `<span class="fr" style="border-style:dashed"><b>Built ${esc(DATA.built_at || 'this morning')}</b> — after every source reported in:</span>` +
     DATA.freshness.map(f =>
       `<span class="fr ${f.ok ? 'ok' : 'stale'}"><b>${esc(f.name)}</b> · ${esc(f.when)}</span>`).join('');
