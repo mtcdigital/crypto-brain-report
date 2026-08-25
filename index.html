@@ -719,9 +719,7 @@ document.addEventListener('click', e => {
       <div class="d" style="margin-top:6px"><b style="color:${col}">${verdict(v)}.</b> ${q}<br><span style="color:var(--ink3)">${why}</span></div></div>`;
   }).join('');
 
-  $('summaryNote').innerHTML = `📌 <b>Conviction ${P.conviction}/100.</b> ${esc(DATA.takeaway || '')}
-    <br><br>Built from <b>${P.inputs} pieces of dated evidence</b> across ${P.sources_used.length} named sources:
-    ${P.sources_used.map(s=>esc(s)).join(' · ')}.`;
+  $('summaryNote').style.display='none';
 
   if ($('fresh') && DATA.freshness) $('fresh').innerHTML =
     `<span class="fr" style="border-style:dashed"><b>Built ${esc(DATA.built_at || 'this morning')}</b> — after every source reported in:</span>` +
