@@ -710,10 +710,10 @@ document.addEventListener('click', e => {
     `</ul>`;
 
   const SC = [
-    ['value','Is it a good time to buy Bitcoin?','Is Bitcoin cheap right now compared to its own past?','Under 40 = not cheap · 40–60 = fair price · 60+ = time to buy', v=>v>=60?'Looks like a bargain':v>=40?'A fair price — not a steal':'Not cheap right now'],
-    ['trend','Has the crypto market proved it is now trending upwards?','Has the price actually started climbing for real?','Under 40 = downtrend · 40–60 = trying to turn · 60+ = uptrend confirmed', v=>v>=60?'The climb is starting to look real':v>=40?'Trying to turn up — not proven yet':'Still stuck or heading down'],
-    ['risk','How volatile is the crypto market right now?','How dangerous does the market feel right now?','Under 40 = wild, be careful · 40–60 = jumpy · 60+ = calm', v=>v>=60?'Pretty calm out there':v>=40?'Somewhat jumpy':'Wild — drops get ugly fast'],
-    ['rotation','Is it altcoin season yet?','Is money moving into the smaller coins yet?','Under 40 = Bitcoin\'s market · 40–60 = alts stirring · 60+ = altcoin season', v=>v>=60?'Yes — the smaller coins are getting the money':v>=40?'A little movement, nothing big':'No — money is still hiding in Bitcoin']
+    ['value','Is it a good time to buy Bitcoin?','Is Bitcoin cheap right now compared to its own past?',['Under 40: not cheap','40–60: fair price','60+: time to buy'], v=>v>=60?'Looks like a bargain':v>=40?'A fair price — not a steal':'Not cheap right now'],
+    ['trend','Has the crypto market proved it is now trending upwards?','Has the price actually started climbing for real?',['Under 40: downtrend','40–60: trying to turn','60+: uptrend confirmed'], v=>v>=60?'The climb is starting to look real':v>=40?'Trying to turn up — not proven yet':'Still stuck or heading down'],
+    ['risk','How volatile is the crypto market right now?','How dangerous does the market feel right now?',['Under 40: wild, be careful','40–60: jumpy','60+: calm'], v=>v>=60?'Pretty calm out there':v>=40?'Somewhat jumpy':'Wild — drops get ugly fast'],
+    ['rotation','Is it altcoin season yet?','Is money moving into the smaller coins yet?',["Under 40: Bitcoin's market",'40–60: alts stirring','60+: altcoin season'], v=>v>=60?'Yes — the smaller coins are getting the money':v>=40?'A little movement, nothing big':'No — money is still hiding in Bitcoin']
   ];
   $('scores').innerHTML = SC.map(([k,label,q,zones,verdict]) => {
     const v = S[k];
@@ -736,7 +736,9 @@ document.addEventListener('click', e => {
         <span style="position:absolute;left:60%;transform:translateX(-50%)">60</span>
         <span style="position:absolute;right:0">100</span>
       </div>
-      <div class="d" style="margin-top:6px"><b style="color:${col}">${verdict(v)}.</b> ${q}<br><span style="color:var(--ink3)">${zones}</span></div></div>`;
+      <div class="d" style="margin-top:6px"><b style="color:${col}">${verdict(v)}.</b> ${q}
+        <ul style="margin:5px 0 0 14px;padding:0;color:var(--ink3)">${zones.map(z=>`<li style="margin:2px 0">${z}</li>`).join('')}</ul>
+      </div></div>`;
   }).join('');
 
   $('summaryNote').style.display='none';
