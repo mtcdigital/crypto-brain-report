@@ -318,8 +318,8 @@ h3{font-size:17px;font-weight:700}
 #donut svg path:hover,#snaps svg path:hover{opacity:1!important;stroke:rgba(255,255,255,.85);stroke-width:1.5}
 /* guest: hover ? popovers on the four score boxes */
 .score{overflow:visible!important;position:relative}
-.sq{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:rgba(148,160,184,.22);color:#a8a8c8;font-size:11px;font-weight:800;cursor:help;position:relative;vertical-align:middle}
-.sq .sqp{display:none;position:absolute;top:20px;left:50%;transform:translateX(-50%);width:280px;max-width:82vw;z-index:60;background:#1b2233;border:1px solid rgba(34,211,238,.45);border-radius:10px;padding:11px 13px;font-size:11.5px;font-weight:400;color:#c7cede;text-align:left;line-height:1.55;text-transform:none;letter-spacing:0;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.sq{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:rgba(148,160,184,.22);color:#a8a8c8;font-size:11px;font-weight:800;cursor:help;position:static;vertical-align:middle}
+.sq .sqp{display:none;position:absolute;top:34px;left:8px;right:8px;z-index:60;background:#1b2233;border:1px solid rgba(34,211,238,.45);border-radius:10px;padding:11px 13px;font-size:11.5px;font-weight:400;color:#c7cede;text-align:left;line-height:1.55;text-transform:none;letter-spacing:0;box-shadow:0 8px 24px rgba(0,0,0,.5)}
 .sq:hover .sqp{display:block}
 </style>
 
@@ -717,13 +717,13 @@ document.addEventListener('click', e => {
 
   const SC = [
     ['value','Is it a good time to buy Bitcoin?',['Under 40: not cheap','40–60: fair price','60+: time to buy'], v=>v>=60?'Looks like a bargain':v>=40?'A fair price — not a steal':'Not cheap right now',
-     "Tracked from 5 live inputs: Bitcoin vs its long-term power-law fair value, vs its 200-week average, weekly RSI, its 1-year return, and the Fear & Greed Index — plus fresh CCI / Ben Cowen calls. Each votes bearish-to-bullish, votes are weighted by source trust, and the blend lands on a hard 0–100 scale where 50 = neutral."],
+     "<b>Tracked from:</b><ul style='margin:5px 0 5px 14px;padding:0'><li>Bitcoin vs its long-term power-law fair value</li><li>Bitcoin vs its 200-week average</li><li>Weekly RSI</li><li>The 1-year return</li><li>The Fear & Greed Index</li><li>Fresh CCI / Ben Cowen calls</li></ul>Each input votes bearish-to-bullish, weighted by source trust. Hard 0–100 scale — 50 = neutral."],
     ['trend','Has the crypto market proved it is now trending upwards?',['Under 40: downtrend','40–60: trying to turn','60+: uptrend confirmed'], v=>v>=60?'The climb is starting to look real':v>=40?'Trying to turn up — not proven yet':'Still stuck or heading down',
-     "Tracked from: price vs its 50-week and 100-week averages, Ben Cowen's 20/21-week band, CCI's $74K-to-$94K decision ladder, the last 7 days of tracked-Twitter sentiment, and fresh CCI / Cowen calls. Hard 0–100 scale, 50 = neutral."],
+     "<b>Tracked from:</b><ul style='margin:5px 0 5px 14px;padding:0'><li>Price vs its 50-week average</li><li>Price vs its 100-week average</li><li>Ben Cowen's 20/21-week band</li><li>CCI's $74K-to-$94K decision ladder</li><li>7 days of tracked-Twitter sentiment</li><li>Fresh CCI / Cowen calls</li></ul>Hard 0–100 scale — 50 = neutral."],
     ['risk','How volatile is the crypto market right now?',['Under 40: wild, be careful','40–60: jumpy','60+: calm'], v=>v>=60?'Pretty calm out there':v>=40?'Somewhat jumpy':'Wild — drops get ugly fast',
-     "Tracked from: the funding rate (how much borrowed money is betting on higher prices) and trading volume vs its 30-day average, plus fresh risk warnings from the sources. Hard 0–100 scale where higher = calmer, 50 = neutral."],
+     "<b>Tracked from:</b><ul style='margin:5px 0 5px 14px;padding:0'><li>The funding rate — how much borrowed money is betting on higher prices</li><li>Trading volume vs its 30-day average</li><li>Fresh risk warnings from the sources</li></ul>Hard 0–100 scale — higher = calmer, 50 = neutral."],
     ['rotation','Is it altcoin season yet?',["Under 40: Bitcoin's market",'40–60: alts stirring','60+: altcoin season'], v=>v>=60?'Yes — the smaller coins are getting the money':v>=40?'A little movement, nothing big':'No — money is still hiding in Bitcoin',
-     "Tracked from: Bitcoin dominance vs CCI's 52% alt-season line, and the last 7 days of tracked-Twitter sentiment on the major alts. Hard 0–100 scale, 50 = neutral."]
+     "<b>Tracked from:</b><ul style='margin:5px 0 5px 14px;padding:0'><li>Bitcoin dominance vs CCI's 52% alt-season line</li><li>7 days of tracked-Twitter sentiment on the major alts</li></ul>Hard 0–100 scale — 50 = neutral."]
   ];
   $('scores').innerHTML = SC.map(([k,label,zones,verdict,foot]) => {
     const v = S[k];
