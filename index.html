@@ -425,14 +425,7 @@ h3{font-size:17px;font-weight:700}
       <div class="eyebrow">What's hot · Twitter Scraper</div>
       <h2>What the tracked accounts are actually talking about</h2>
 
-      <div class="topplay">
-        <div class="ring" id="tpRing"><i>—</i></div>
-        <div class="tpbody">
-          <div class="tplabel">🏆 Today's top-scored play</div>
-          <div class="tpcoin" id="tpCoin">—</div>
-          <div class="tpverdict" id="tpVerdict"></div>
-        </div>
-      </div>
+      <div id="topPlays" style="background:rgba(255,255,255,.03);border:1px solid rgba(148,148,180,.2);border-radius:14px;padding:14px 16px"></div>
 
       <div class="explainer">
         <p><b>What this is, in one paragraph:</b> the <b>Twitter Scraper</b> reads X/Twitter every day for us.
@@ -1018,18 +1011,28 @@ function zoneMeter(m){
       <div class="note">${esc(why)}</div>${roster?`<div class="xp"><b>Every account on the roster (${DATA.scraper.handles.length}):</b><br>${DATA.scraper.handles.map(h=>`<a href="https://x.com/${esc(h)}" target="_blank" rel="noopener">@${esc(h)}</a>`).join(' · ')}</div>`:''}</div>`;
   }).join('');
 
-  const best = Object.keys(DATA.plays||{}).map(k => [k, DATA.plays[k]]).sort((a,b) => b[1]-a[1])[0];
-  if(best){
-    $('tpRing').innerHTML = `<i>${best[1]}/10</i>`;
-    $('tpRing').style.background = `conic-gradient(var(--amber-b) 0 ${best[1]*10}%, rgba(255,255,255,.09) ${best[1]*10}%)`;
-    const all = (DATA.tiers.month||[]).concat(DATA.tiers.week||[], DATA.tiers.today||[]);
-    const cnt = all.filter(t => t.t === best[0])[0];
-    $('tpCoin').innerHTML = `$${esc(best[0])} <span class="chip a">score ${best[1]}/10</span>` +
-      (cnt ? ` <span class="chip v">${cnt.today} accounts on the last captured day</span>` : '');
-    $('tpVerdict').innerHTML = best[1] >= 7
-      ? 'Strong setup. <span style="color:var(--ink3)">7 or higher is worth real money by our own rule.</span>'
-      : 'Watch this week. <span style="color:var(--ink3)">Under 7 means watch it, do not buy yet.</span>';
-  }
+  (function topPlays(){
+    const host=$('topPlays'); if(!host) return;
+    const score = k => (DATA.plays||{})[k];
+    const rank = (list, accKey) => (list||[]).slice().sort((a,b)=>((score(b.t)||0)-(score(a.t)||0)) || ((b[accKey]||0)-(a[accKey]||0)));
+    const week = rank(DATA.tiers.week, 'acc7').slice(0,5);
+    const month = rank(DATA.tiers.month, 'acc30').slice(0,3);
+    const row = (e, accKey, accLabel) => {
+      const sc = score(e.t);
+      return `<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:7px 0;border-bottom:1px solid rgba(148,148,180,.14)">
+        <b style="min-width:72px;font-size:15px">$${esc(e.t)}</b>
+        ${sc!=null?`<span class="chip a">score ${sc}/10</span>`:`<span class="chip v">unscored</span>`}
+        <span style="color:var(--ink3);font-size:12px">${e[accKey]||0} ${accLabel}</span>
+        ${sc>=7?`<b style="margin-left:auto;color:var(--green-b);font-size:11.5px">STRONG SETUP</b>`:`<b style="margin-left:auto;color:var(--ink3);font-size:11.5px">WATCH</b>`}
+      </div>`;
+    };
+    host.innerHTML =
+      `<div class="tplabel">🏆 This week's top scored plays <span style="color:var(--ink3);font-weight:400">(needs at least a week of buzz — up to 5)</span></div>` +
+      (week.length? week.map(e=>row(e,'acc7','accounts this week')).join('') : `<p class="sub" style="font-size:13px">Nothing has a full week of buzz right now.</p>`) +
+      `<div class="tplabel" style="margin-top:14px">📅 This month's top scored plays <span style="color:var(--ink3);font-weight:400">(up to 3)</span></div>` +
+      (month.length? month.map(e=>row(e,'acc30','accounts this month')).join('') : `<p class="sub" style="font-size:13px">Nothing qualifies yet this month.</p>`) +
+      `<p class="sub" style="font-size:12px;margin-top:8px">7/10 or higher is what the pros treat as worth real money. Today-only buzz never makes this list — brand-new names live under "New opportunities as of today" below.</p>`;
+  })();
 
   const watch = (DATA.takeaway.match(/\$[A-Z0-9]+/g) || []).slice(0,3);
   const wt = document.querySelector('[data-live="watch"]');
