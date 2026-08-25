@@ -369,15 +369,10 @@ h3{font-size:17px;font-weight:700}
 
     <div class="step s4">
       <div class="eyebrow">Step 4 · The reasoning</div>
-      <h2>Every input, its source, and how much it counted</h2>
-      <p class="sub">Sources are not treated equally. A published level from a paid advisory outranks one
-      anonymous account posting a chart.</p>
+      <h2>Our data sources, and what they're saying</h2>
+      <p class="sub">Not every source gets an equal vote. Paid research and hard market data count for more than social-media chatter — here is the exact scoring, then what each source is saying in plain English.</p>
       <div id="evidence"></div>
-      <details class="group"><summary><h3>⚖️ How much each source counts</h3>
-        <span class="why">and the dated notes logged by hand</span><span class="toggle"></span></summary>
-        <table class="wtable" id="weights"></table>
-        <div id="manualNotes"></div>
-      </details>
+      
     </div>
   </div>
 
@@ -685,42 +680,42 @@ document.addEventListener('click', e => {
   const m = {}; (DATA.metrics||[]).forEach(x => m[x.id] = x);
   const bits = [];
   if(m.btc_cci) bits.push(`Bitcoin is ${m.btc_cci.display}`);
-  if(m.powerlaw) bits.push(`${m.powerlaw.display} against its long-term trend line`);
-  if(m.ma50) bits.push(`${m.ma50.display} versus the 50-week average`);
+  if(m.powerlaw) bits.push(`priced ${m.powerlaw.display} versus what its own long-term history says it should be worth`);
+  if(m.ma50) bits.push(`${m.ma50.display} versus its average price over the last year`);
   if(m.fear) bits.push(`the mood reads ${m.fear.value}/100 (${m.fear.label})`);
 
   const risks = [], opps = [];
-  if(m.ma50 && m.ma50.value < 0) risks.push('the 50-week trend line — CCI’s own risk switch — is still lost');
-  if(m.funding && m.funding.value > 0.02) risks.push('borrowing heat is climbing, so leverage is getting crowded');
-  if(m.dominance && m.dominance.value > 54) risks.push('Bitcoin dominance is high, so alt-coins keep bleeding against it');
-  if(m.cycle && m.cycle.drawdown < -40) risks.push(`Bitcoin is ${m.cycle.drawdown.toFixed(0)}% below its cycle high and nothing has confirmed a floor`);
-  if(m.powerlaw && m.powerlaw.value < -35) opps.push('Bitcoin is at a historically generous price against its own trend line');
-  if(m.ma200 && m.ma200.value < 5) opps.push('price is sitting on the 200-week average, the zone every past cycle low has touched');
-  if(m.rsi && m.rsi.value < 40) opps.push('weekly momentum is washed out rather than overheated');
-  if(m.fear && m.fear.value < 35) opps.push('the crowd is scared, which historically favours patient buyers');
+  if(m.ma50 && m.ma50.value < 0) risks.push('Bitcoin still hasn't climbed back above its one-year average price — the signal the pros wait for before calling the rough stretch over');
+  if(m.funding && m.funding.value > 0.02) risks.push('a lot of traders are betting with borrowed money right now, which makes any drop faster and uglier');
+  if(m.dominance && m.dominance.value > 54) risks.push('money is still favoring Bitcoin over the smaller coins, so the smaller coins keep losing ground');
+  if(m.cycle && m.cycle.drawdown < -40) risks.push(`Bitcoin is ${m.cycle.drawdown.toFixed(0)}% below its old record high, and nothing proves the bottom is in yet`);
+  if(m.powerlaw && m.powerlaw.value < -35) opps.push('compared to its own long-term history, Bitcoin is on sale right now');
+  if(m.ma200 && m.ma200.value < 5) opps.push('Bitcoin is sitting in the price zone where every past crash eventually stopped and turned around');
+  if(m.rsi && m.rsi.value < 40) opps.push('the market is calm rather than overheated — historically a better time to be buying');
+  if(m.fear && m.fear.value < 35) opps.push('most people are scared right now — and historically the scared times were the good times to buy');
 
   $('vBody').innerHTML =
     `<b>Today's call: ${call[0]}.</b> ${bits.join(', ')}.` +
-    `<br><br><b style="color:var(--ink)">Biggest risk right now:</b> ${risks[0] || 'nothing is flashing red'}` +
+    `<br><br><b style="color:var(--ink)">The biggest worry right now:</b> ${risks[0] || 'nothing is flashing red'}` +
     (risks[1] ? `, and ${risks[1]}` : '') + '.' +
-    `<br><b style="color:var(--ink)">Biggest opportunity:</b> ${opps[0] || 'nothing stands out as cheap'}` +
+    `<br><b style="color:var(--ink)">The good news:</b> ${opps[0] || 'nothing stands out as cheap'}` +
     (opps[1] ? `, and ${opps[1]}` : '') + '.' +
-    `<br><br><b style="color:var(--ink)">What the combined data suggests:</b> ${P.profiles.medium.rows[0].sym} gets the
+    `<br><br><b style="color:var(--ink)">Bottom line:</b> ${P.profiles.medium.rows[0].sym} gets the
      largest share at ${P.profiles.medium.rows[0].pct}%, with
      ${(P.profiles.medium.rows.find(r=>r.sym==='CASH')||{pct:0}).pct}% deliberately held in cash.`;
 
   const SC = [
-    ['value','Value','Is Bitcoin cheap against its own history?','the main driver of how much to own'],
-    ['trend','Trend','Has the trend actually turned yet?','the brake — it decides how fast to deploy'],
-    ['risk','Positioning','How crowded and leveraged is the bet?','high leverage makes drops violent'],
-    ['rotation','Rotation','Bitcoin, or is money moving to alt-coins?','decides whether alts get any room']
+    ['value','Good price?','Is Bitcoin cheap right now compared to its own past?','Higher = more of a bargain', v=>v>=60?'Looks like a bargain':v>=40?'A fair price — not a steal':'Not cheap right now'],
+    ['trend','Moving up?','Has the price actually started climbing for real?','Higher = the climb looks real', v=>v>=60?'The climb is starting to look real':v>=40?'Trying to turn up — not proven yet':'Still stuck or heading down'],
+    ['risk','How wild?','How dangerous does the market feel right now?','Higher = calmer, safer conditions', v=>v>=60?'Pretty calm out there':v>=40?'Somewhat jumpy':'Wild — drops get ugly fast'],
+    ['rotation','Small coins\' turn?','Is money moving into the smaller coins yet?','Higher = smaller coins waking up', v=>v>=60?'Yes — the smaller coins are getting the money':v>=40?'A little movement, nothing big':'No — money is still hiding in Bitcoin']
   ];
-  $('scores').innerHTML = SC.map(([k,label,q,why]) => {
+  $('scores').innerHTML = SC.map(([k,label,q,why,verdict]) => {
     const v = S[k];
     const col = v>=60 ? 'var(--green)' : v>=40 ? 'var(--amber)' : 'var(--red)';
     return `<div class="score"><div class="k">${label}</div><div class="v">${v.toFixed(0)}<span class="unit" style="font-size:13px;color:var(--ink3)">/100</span></div>
       <div class="bar"><div class="fill" style="width:${v}%;background:${col}"></div></div>
-      <div class="d" style="margin-top:6px">${q}<br><span style="color:var(--ink3)">${why}</span></div></div>`;
+      <div class="d" style="margin-top:6px"><b style="color:${col}">${verdict(v)}.</b> ${q}<br><span style="color:var(--ink3)">${why}</span></div></div>`;
   }).join('');
 
   $('summaryNote').innerHTML = `📌 <b>Conviction ${P.conviction}/100.</b> ${esc(DATA.takeaway || '')}
@@ -796,22 +791,23 @@ function renderSnaps(){
   if(!rows.length){ $('snaps').innerHTML = '<p class="sub">Snapshots build up as the archive grows.</p>'; return; }
   $('snaps').innerHTML = rows.map(s => {
     const prof = s.profiles[RISK] || s.profiles.medium;
-    const top = prof.rows.filter(r=>r.sym!=='CASH').slice(0,4);
-    const cash = (prof.rows.find(r=>r.sym==='CASH')||{pct:0}).pct;
+    const top = prof.rows.filter(r=>r.sym!=='CASH').slice(0,3);
     let verdict='';
     if(!s.is_now && prof.ret!=null){
       const up=prof.ret>=0, col=up?'var(--green-b)':'var(--red-b)';
-      verdict = `<div class="ln" style="margin-top:8px"><span>$1M then → today</span><b style="color:${col}">$${Math.round(prof.val/1000).toLocaleString()}K</b></div>
-        <div class="ln"><span>return</span><b style="color:${col}">${up?'+':''}${prof.ret}%</b></div>` +
-        (s.btc_ret!=null?`<div class="ln" style="color:var(--ink3)"><span>just Bitcoin</span><b>${s.btc_ret>=0?'+':''}${s.btc_ret}%</b></div>`:'');
+      verdict = `<div style="margin-top:10px;text-align:center">
+        <div style="font-size:23px;font-weight:800;color:${col}">${up?'+':''}${prof.ret}%</div>
+        <div style="font-size:12.5px;font-weight:700;color:${col}">$1,000,000 → $${prof.val.toLocaleString()}</div>
+        <div style="font-size:11px;color:var(--ink3);margin-top:2px">if you'd followed this advice${s.btc_ret!=null?`<br>(just holding Bitcoin: ${s.btc_ret>=0?'+':''}${s.btc_ret}%)`:''}</div>
+      </div>`;
     } else if (s.is_now){
-      verdict = `<div class="ln" style="margin-top:8px;color:var(--ink3)"><span>today's advice</span><b>scored in 3 mo</b></div>`;
+      verdict = `<div style="margin-top:10px;text-align:center;font-size:11.5px;color:var(--ink3)">today's advice — it gets scored<br>like the others in 3 months</div>`;
     }
     return `<div class="snap${s.is_now?' now':''}">
       <div class="when">${esc(s.label)} · ${esc(s.as_of)}</div>
       <div class="px">${s.btc ? usd0(s.btc) : '—'} <span style="font-size:11px;color:var(--ink3)">BTC</span></div>
-      ${top.map(r => `<div class="ln"><span>${esc(r.sym)}</span><b>${r.pct}%</b></div>`).join('')}
-      <div class="ln"><span>cash</span><b>${cash}%</b></div>
+      <div style="display:flex;justify-content:center;margin:8px 0">${donut(prof.rows,116)}</div>
+      ${top.map(r => `<div class="ln"><span><i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${ACOL[r.sym]||'#3b82f6'};margin-right:5px"></i>${esc(r.sym)}</span><b>${r.pct}%</b></div>`).join('')}
       ${verdict}
     </div>`;
   }).join('');
@@ -825,34 +821,34 @@ $('xpSnaps').innerHTML = [
   ['What to check.','Did the cash level rise before drawdowns? Did conviction climb near the lows? Over enough months this tells us which gauges are worth keeping and which are noise.']
 ].map(p => `<span class="xpl"><b>${p[0]}</b> ${p[1]}</span>`).join('');
 
-/* ---------------- Tab 1: evidence + weights ---------------- */
 (function evidence(){
-  const CATN = {value:'Value', trend:'Trend', risk:'Positioning', rotation:'Rotation'};
-  $('evidence').innerHTML = (DATA.portfolio.evidence||[]).map(e => {
-    const cls = e.signal > 0.15 ? 'ok' : e.signal < -0.15 ? 'badc' : 'warnc';
-    return `<div class="evrow"><span class="evsig ${cls}">${e.signal>0?'+':''}${e.signal.toFixed(2)}</span>
-      <div><span class="srcchip ${e.src}">${esc((DATA.sources[e.src]||{}).name || e.src)}</span>
-      <span class="chip c" style="font-size:10px">${CATN[e.cat]||e.cat}</span>
-      <span style="color:var(--ink3);font-size:11px"> weight ${e.weight}</span><br>${esc(e.note)}</div></div>`;
-  }).join('');
-
   const W = DATA.portfolio.source_weights || {};
-  const mx = Math.max(...Object.values(W));
-  $('weights').innerHTML = Object.entries(W).sort((a,b)=>b[1]-a[1]).map(([k,v]) =>
-    `<tr><td style="width:150px"><span class="srcchip ${k}">${esc((DATA.sources[k]||{}).name||k)}</span></td>
-      <td style="width:56px;font-weight:800">${v.toFixed(2)}</td>
-      <td><div class="wb" style="width:${(v/mx*100).toFixed(0)}%"></div></td>
-      <td style="color:var(--ink2);font-size:12px">${esc((DATA.sources[k]||{}).full||'')}</td></tr>`).join('');
-
-  const notes = DATA.portfolio.manual || [];
-  $('manualNotes').innerHTML = '<h3 style="margin-top:16px;font-size:15px">📝 Notes logged by hand</h3>' +
-    '<p class="sub" style="font-size:13px">Private conversations and calls, dated and attributed. A note fades to zero ' +
-    'influence over 90 days unless it is marked as a long-term principle.</p>' +
-    (notes.length ? notes.map(n =>
-      `<div class="evrow"><span class="evsig">${n.freshness ? (n.freshness*100).toFixed(0)+'%' : '—'}</span>
-       <div><b>${esc(n.date)} · ${esc(n.source)}</b> <span class="chip v" style="font-size:10px">${esc(n.kind||'note')}</span>
-       <br>${esc(n.note)}</div></div>`).join('')
-      : '<p class="sub">Nothing logged yet. Add entries to manual_sources.json and they appear here.</p>');
+  const scoreCard = Object.entries(W).sort((a,b)=>b[1]-a[1]).map(([k,v]) => {
+    const s = Math.round(v*10);
+    return `<div style="padding:9px 0;border-bottom:1px solid rgba(148,148,180,.15)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="srcchip ${k}" style="min-width:120px;text-align:center">${esc((DATA.sources[k]||{}).name||k)}</span>
+        <b style="width:48px;font-size:15px">${s}/10</b>
+        <div style="flex:1;height:8px;background:rgba(148,148,180,.15);border-radius:4px;overflow:hidden"><div style="width:${s*10}%;height:100%;background:var(--cyan,#22d3ee)"></div></div>
+      </div>
+      <div style="color:var(--ink3);font-size:12px;margin-top:3px">${esc((DATA.sources[k]||{}).full||'')}</div>
+    </div>`;
+  }).join('');
+  const ev = (DATA.portfolio.evidence||[]);
+  const shown = ev.slice(0,10), rest = ev.length - shown.length;
+  const rows = shown.map(e => {
+    const up = e.signal > 0.15, dn = e.signal < -0.15;
+    const icon = up?'▲':dn?'▼':'◦';
+    const col = up?'var(--green-b)':dn?'var(--red-b)':'var(--ink3)';
+    const say = up?'points toward buying':dn?'points toward waiting':'neutral right now';
+    return `<div class="evrow"><span class="evsig" style="color:${col};font-size:15px">${icon}</span>
+      <div><span class="srcchip ${e.src}">${esc((DATA.sources[e.src]||{}).name || e.src)}</span>
+      <b style="font-size:11.5px;color:${col}"> ${say}</b><br>${esc(e.note)}</div></div>`;
+  }).join('');
+  $('evidence').innerHTML =
+    `<h3 style="font-size:15px;margin-bottom:4px">⚖️ Our data sources, scored by how much we trust them</h3>` + scoreCard +
+    `<h3 style="font-size:15px;margin:18px 0 4px">🗣 What they're saying right now</h3>` + rows +
+    (rest>0?`<p class="sub" style="font-size:12.5px">…plus ${rest} smaller signals counted in the background.</p>`:'');
 })();
 
 /* ---------------- Tab 2: metric cards ---------------- */
