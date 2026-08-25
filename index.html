@@ -685,7 +685,7 @@ document.addEventListener('click', e => {
   if(m.fear) bits.push(`the mood reads ${m.fear.value}/100 (${m.fear.label})`);
 
   const risks = [], opps = [];
-  if(m.ma50 && m.ma50.value < 0) risks.push('Bitcoin still hasn't climbed back above its one-year average price — the signal the pros wait for before calling the rough stretch over');
+  if(m.ma50 && m.ma50.value < 0) risks.push('Bitcoin has not yet climbed back above its one-year average price — the signal the pros wait for before calling the rough stretch over');
   if(m.funding && m.funding.value > 0.02) risks.push('a lot of traders are betting with borrowed money right now, which makes any drop faster and uglier');
   if(m.dominance && m.dominance.value > 54) risks.push('money is still favoring Bitcoin over the smaller coins, so the smaller coins keep losing ground');
   if(m.cycle && m.cycle.drawdown < -40) risks.push(`Bitcoin is ${m.cycle.drawdown.toFixed(0)}% below its old record high, and nothing proves the bottom is in yet`);
