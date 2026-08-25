@@ -689,7 +689,7 @@ document.addEventListener('click', e => {
   if(m.btc_cci) bits.push(`Bitcoin is ${m.btc_cci.display}`);
   if(m.powerlaw) bits.push(`priced ${m.powerlaw.display} versus what its own long-term history says it should be worth`);
   if(m.ma50) bits.push(`${m.ma50.display} versus its average price over the last year`);
-  if(m.fear) bits.push(`the mood reads ${m.fear.value}/100 (${m.fear.label})`);
+  if(m.fear) bits.push(`the Fear and Greed Index reads ${m.fear.value} out of 100 — meaning ${m.fear.value>=55?'many investors are getting greedy right now':m.fear.value<=45?'many investors are fearful right now':'investors are neither fearful nor greedy right now'}`);
 
   const risks = [], opps = [];
   if(m.ma50 && m.ma50.value < 0) risks.push('Bitcoin has not yet climbed back above its one-year average price — the signal the pros wait for before calling the rough stretch over');
