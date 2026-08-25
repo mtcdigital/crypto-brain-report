@@ -704,17 +704,33 @@ document.addEventListener('click', e => {
     `<br><br><b style="color:var(--ink)">Bottom line:</b> ${(function(){const rows=P.profiles.medium.rows;const cash=(rows.find(r=>r.sym==='CASH')||{pct:0}).pct;const top=rows.filter(r=>r.sym!=='CASH')[0]||{sym:'BTC',pct:0};return rows[0].sym==='CASH'?`on the default setting we deliberately keep ${cash}% in cash until the trend proves itself — the biggest invested position is ${top.sym} at ${top.pct}%`:`${rows[0].sym} gets the largest share at ${rows[0].pct}%, with ${cash}% deliberately held in cash`;})()}.`;
 
   const SC = [
-    ['value','Is it a good time to buy Bitcoin?','Is Bitcoin cheap right now compared to its own past?','Higher = more of a bargain', v=>v>=60?'Looks like a bargain':v>=40?'A fair price — not a steal':'Not cheap right now'],
-    ['trend','Has the crypto market proved it is now trending upwards?','Has the price actually started climbing for real?','Higher = the climb looks real', v=>v>=60?'The climb is starting to look real':v>=40?'Trying to turn up — not proven yet':'Still stuck or heading down'],
-    ['risk','How volatile is the crypto market right now?','How dangerous does the market feel right now?','Higher = calmer, safer conditions', v=>v>=60?'Pretty calm out there':v>=40?'Somewhat jumpy':'Wild — drops get ugly fast'],
-    ['rotation','Is it altcoin season yet?','Is money moving into the smaller coins yet?','Higher = smaller coins waking up', v=>v>=60?'Yes — the smaller coins are getting the money':v>=40?'A little movement, nothing big':'No — money is still hiding in Bitcoin']
+    ['value','Is it a good time to buy Bitcoin?','Is Bitcoin cheap right now compared to its own past?','Under 40 = not cheap · 40–60 = fair price · 60+ = time to buy', v=>v>=60?'Looks like a bargain':v>=40?'A fair price — not a steal':'Not cheap right now'],
+    ['trend','Has the crypto market proved it is now trending upwards?','Has the price actually started climbing for real?','Under 40 = downtrend · 40–60 = trying to turn · 60+ = uptrend confirmed', v=>v>=60?'The climb is starting to look real':v>=40?'Trying to turn up — not proven yet':'Still stuck or heading down'],
+    ['risk','How volatile is the crypto market right now?','How dangerous does the market feel right now?','Under 40 = wild, be careful · 40–60 = jumpy · 60+ = calm', v=>v>=60?'Pretty calm out there':v>=40?'Somewhat jumpy':'Wild — drops get ugly fast'],
+    ['rotation','Is it altcoin season yet?','Is money moving into the smaller coins yet?','Under 40 = Bitcoin\'s market · 40–60 = alts stirring · 60+ = altcoin season', v=>v>=60?'Yes — the smaller coins are getting the money':v>=40?'A little movement, nothing big':'No — money is still hiding in Bitcoin']
   ];
-  $('scores').innerHTML = SC.map(([k,label,q,why,verdict]) => {
+  $('scores').innerHTML = SC.map(([k,label,q,zones,verdict]) => {
     const v = S[k];
     const col = v>=60 ? 'var(--green)' : v>=40 ? 'var(--amber)' : 'var(--red)';
+    const pos = Math.min(98, Math.max(2, v));
     return `<div class="score"><div class="k">${label}</div><div class="v">${v.toFixed(0)}<span class="unit" style="font-size:13px;color:var(--ink3)">/100</span></div>
-      <div class="bar"><div class="fill" style="width:${v}%;background:${col}"></div></div>
-      <div class="d" style="margin-top:6px"><b style="color:${col}">${verdict(v)}.</b> ${q}<br><span style="color:var(--ink3)">${why}</span></div></div>`;
+      <div style="position:relative;height:14px;margin-top:6px">
+        <div style="position:absolute;inset:0;display:flex;border-radius:7px;overflow:hidden">
+          <div style="width:40%;background:rgba(239,68,68,.30)"></div>
+          <div style="width:20%;background:rgba(251,191,36,.32)"></div>
+          <div style="width:40%;background:rgba(34,197,94,.30)"></div>
+        </div>
+        <div style="position:absolute;left:40%;top:-2px;bottom:-2px;width:1px;background:rgba(240,240,250,.4)"></div>
+        <div style="position:absolute;left:60%;top:-2px;bottom:-2px;width:1px;background:rgba(240,240,250,.4)"></div>
+        <div style="position:absolute;left:${pos}%;transform:translateX(-50%);top:-3px;width:7px;height:20px;border-radius:3px;background:${col};border:1.5px solid rgba(255,255,255,.75)"></div>
+      </div>
+      <div style="position:relative;height:13px;font-size:9.5px;color:var(--ink3);margin-top:2px">
+        <span style="position:absolute;left:0">0</span>
+        <span style="position:absolute;left:40%;transform:translateX(-50%)">40</span>
+        <span style="position:absolute;left:60%;transform:translateX(-50%)">60</span>
+        <span style="position:absolute;right:0">100</span>
+      </div>
+      <div class="d" style="margin-top:6px"><b style="color:${col}">${verdict(v)}.</b> ${q}<br><span style="color:var(--ink3)">${zones}</span></div></div>`;
   }).join('');
 
   $('summaryNote').style.display='none';
