@@ -1082,7 +1082,7 @@ function zoneMeter(m){
         ${sc != null ? `<span class="chip ${sc>=7?'g':(sc>=4?'a':'v')}">score ${sc}/10</span>` : ''}
         <span class="chip v">${t.acc30} accounts / month</span></div>
         ${spark(t.days)}${sentBar(t.t)}
-        <div class="meta"><b>${t.today}</b> that day · <b>${t.acc7}</b> this week · <b>${t.acc30}</b> this month</div></div>`;
+        <div class="meta"><b>${t.today}</b> today · <b>${t.acc7}</b> this week · <b>${t.acc30}</b> this month</div></div>`;
     });
     h += '</div>';
     if(full.length > g.cap) h += `<p class="sub" style="margin-top:8px">…plus ${full.length-g.cap} more not shown.</p>`;
