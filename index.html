@@ -554,7 +554,7 @@ document.addEventListener('click', e => {
 });
 
 /* ---------------- chart engine (inline SVG, no libraries) ---------------- */
-const RANGES = [['7d',7],['30d',30],['6m',182],['1y',365],['All',99999]];
+const RANGES = [['7d',7],['1m',30],['3m',91],['6m',182],['1y',365],['All',99999]];
 const SCOLOR = ['#22d3ee','#fbbf24','#a78bfa','#4ade80','#f87171'];
 
 function chartSVG(spec, days){
@@ -867,7 +867,7 @@ $('xpSnaps').innerHTML = [
   const nsig = (DATA.portfolio.evidence||[]).length;
   const rows = vs.map(e => {
     const up = e.net > 0.12, dn = e.net < -0.12;
-    const icon = up?'▲':dn?'▼':'■';
+    const icon = up?'▲':dn?'▼':'<span style="display:inline-block;width:13px;height:13px;border-radius:3px;background:var(--amber);vertical-align:baseline"></span>';
     const col = up?'var(--green-b)':dn?'var(--red-b)':'var(--amber)';
     const say = up?'leans toward buying':dn?'leans toward waiting':'sees both sides right now';
     return `<div class="evrow"><span class="evsig" style="color:${col};font-size:15px">${icon}</span>
