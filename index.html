@@ -351,7 +351,7 @@ h3{font-size:17px;font-weight:700}
       <p class="sub">The dollars are only there to make the percentages easy to picture. What matters is the
       <b>split</b> — and that cash counts as a real position, not a leftover.</p>
       <div class="pills" id="riskPills"></div>
-      <div class="sub" style="margin-top:10px"><p style="margin:0 0 6px">Every tier holds the same cash cushion — the AI sizes it from the trend score — but what the invested money buys changes completely:</p><ul style="margin:0 0 8px 20px;padding:0"><li style="margin:4px 0"><b>Low risk</b> — a solid Bitcoin cornerstone (50%), the big liquid alts (30%), a slice of utility mid-caps (15%), and a little gold (5%).</li><li style="margin:4px 0"><b>Medium risk</b> — a Bitcoin anchor (25%), big alts like Ethereum and Solana (25%), and half the book (50%) in utility mid-caps.</li><li style="margin:4px 0"><b>High risk</b> — 85% utility mid-caps, topped with big alts (10%) and a Bitcoin sliver (5%).</li><li style="margin:4px 0"><b>Ultra-high risk</b> — 95% attention plays: meme coins / hopping on trends, where crowd attention is the whole engine. Money you can afford to lose. Solana (5%) is the only anchor.</li></ul><p style="margin:0 0 8px;font-style:italic">*Medium is the default.</p><p style="margin:0;font-size:13px;color:var(--ink3)"><b style="color:var(--ink2)">How a coin qualifies:</b> <b>Bitcoin</b> is the anchor — every source we track treats it as its own category. <b>Big alts</b> = top-10 size with deep liquidity (Ethereum, Solana). <b>Utility mid-caps</b> = roughly top-200 coins with a real product or purpose behind them — Ondo puts real-world assets on the blockchain, Zcash and Monero do private payments, Dash does everyday payments — smaller size, so more upside and more pain. <b>Attention plays</b> = memes and trend-chasing, where crowd attention is the entire engine (this cycle that means meme coins; a few cycles ago it would have been NFTs).</p></div>
+      <div class="sub" style="margin-top:10px"><p style="margin:0 0 6px">Every tier holds the same cash cushion — the AI sizes it from the trend score — but what the invested money buys changes completely:</p><ul style="margin:0 0 8px 20px;padding:0"><li style="margin:4px 0"><b>Low risk</b> — a solid Bitcoin cornerstone (50%), the big liquid alts (30%), a slice of utility mid-caps (15%), and a little gold (5%).</li><li style="margin:4px 0"><b>Medium risk</b> — a Bitcoin anchor (25%), big alts like Ethereum and Solana (25%), and half the book (50%) in utility mid-caps.</li><li style="margin:4px 0"><b>High risk</b> — 85% utility mid-caps, topped with big alts (10%) and a Bitcoin sliver (5%).</li><li style="margin:4px 0"><b>Ultra-high risk</b> — 95% attention plays: meme coins / hopping on trends, where crowd attention is the whole engine. Money you can afford to lose. Solana (5%) is the only anchor.</li></ul><p style="margin:0 0 8px;font-style:italic">*Medium is the default.</p><p style="margin:0 0 4px;font-size:13px;color:var(--ink2)"><b>How a coin qualifies:</b></p><ul style="margin:0 0 4px 20px;padding:0;font-size:13px;color:var(--ink3)"><li style="margin:3px 0"><b>Bitcoin</b> — the anchor; every source we track treats it as its own category.</li><li style="margin:3px 0"><b>Big alts</b> — top-10 size with deep liquidity (Ethereum, Solana).</li><li style="margin:3px 0"><b>Utility mid-caps</b> — roughly top-200 coins with a real product or purpose behind them (Ondo puts real-world assets on the blockchain, Zcash and Monero do private payments, Dash does everyday payments). Smaller size, so more upside and more pain.</li><li style="margin:3px 0"><b>Attention plays</b> — memes and trend-chasing, where crowd attention is the entire engine (this cycle that means meme coins; a few cycles ago it would have been NFTs).</li></ul></div>
       <div class="allocwrap">
         <div class="donutbox"><div id="donut"></div><div class="cap" id="donutCap"></div></div>
         <table class="alloc"><thead><tr><th>Asset</th><th style="text-align:right">Share</th>
@@ -708,12 +708,16 @@ document.addEventListener('click', e => {
     `</ul>`;
 
   const SC = [
-    ['value','Is it a good time to buy Bitcoin?',['Under 40: not cheap','40–60: fair price','60+: time to buy'], v=>v>=60?'Looks like a bargain':v>=40?'A fair price — not a steal':'Not cheap right now'],
-    ['trend','Has the crypto market proved it is now trending upwards?',['Under 40: downtrend','40–60: trying to turn','60+: uptrend confirmed'], v=>v>=60?'The climb is starting to look real':v>=40?'Trying to turn up — not proven yet':'Still stuck or heading down'],
-    ['risk','How volatile is the crypto market right now?',['Under 40: wild, be careful','40–60: jumpy','60+: calm'], v=>v>=60?'Pretty calm out there':v>=40?'Somewhat jumpy':'Wild — drops get ugly fast'],
-    ['rotation','Is it altcoin season yet?',["Under 40: Bitcoin's market",'40–60: alts stirring','60+: altcoin season'], v=>v>=60?'Yes — the smaller coins are getting the money':v>=40?'A little movement, nothing big':'No — money is still hiding in Bitcoin']
+    ['value','Is it a good time to buy Bitcoin?',['Under 40: not cheap','40–60: fair price','60+: time to buy'], v=>v>=60?'Looks like a bargain':v>=40?'A fair price — not a steal':'Not cheap right now',
+     "*Tracked from 5 live inputs: Bitcoin vs its long-term power-law fair value, vs its 200-week average, weekly RSI, its 1-year return, and the Fear & Greed Index — plus fresh CCI / Ben Cowen calls. Each votes bearish-to-bullish, votes are weighted by source trust, and the blend lands on a hard 0–100 scale where 50 = neutral."],
+    ['trend','Has the crypto market proved it is now trending upwards?',['Under 40: downtrend','40–60: trying to turn','60+: uptrend confirmed'], v=>v>=60?'The climb is starting to look real':v>=40?'Trying to turn up — not proven yet':'Still stuck or heading down',
+     "*Tracked from: price vs its 50-week and 100-week averages, Ben Cowen's 20/21-week band, CCI's $74K-to-$94K decision ladder, the last 7 days of tracked-Twitter sentiment, and fresh CCI / Cowen calls. Hard 0–100 scale, 50 = neutral."],
+    ['risk','How volatile is the crypto market right now?',['Under 40: wild, be careful','40–60: jumpy','60+: calm'], v=>v>=60?'Pretty calm out there':v>=40?'Somewhat jumpy':'Wild — drops get ugly fast',
+     "*Tracked from: the funding rate (how much borrowed money is betting on higher prices) and trading volume vs its 30-day average, plus fresh risk warnings from the sources. Hard 0–100 scale where higher = calmer, 50 = neutral."],
+    ['rotation','Is it altcoin season yet?',["Under 40: Bitcoin's market",'40–60: alts stirring','60+: altcoin season'], v=>v>=60?'Yes — the smaller coins are getting the money':v>=40?'A little movement, nothing big':'No — money is still hiding in Bitcoin',
+     "*Tracked from: Bitcoin dominance vs CCI's 52% alt-season line, and the last 7 days of tracked-Twitter sentiment on the major alts. Hard 0–100 scale, 50 = neutral."]
   ];
-  $('scores').innerHTML = SC.map(([k,label,zones,verdict]) => {
+  $('scores').innerHTML = SC.map(([k,label,zones,verdict,foot]) => {
     const v = S[k];
     const col = v>=60 ? 'var(--green)' : v>=40 ? 'var(--amber)' : 'var(--red)';
     const pos = Math.min(98, Math.max(2, v));
@@ -736,6 +740,7 @@ document.addEventListener('click', e => {
       </div>
       <div class="d" style="margin-top:6px"><b style="color:${col};font-size:14px">${verdict(v)}.</b>
         <ul style="margin:5px 0 0 14px;padding:0;color:var(--ink3)">${zones.map(z=>`<li style="margin:2px 0">${z}</li>`).join('')}</ul>
+        <div style="margin-top:7px;font-size:10.5px;color:var(--ink3);font-style:italic">${foot}</div>
       </div></div>`;
   }).join('');
 
