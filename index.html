@@ -313,6 +313,9 @@ h3{font-size:17px;font-weight:700}
 .tab.on[data-tab="portfolio"]{background:rgba(34,211,238,.15)!important}
 .tab.on[data-tab="intel"]{background:rgba(167,139,250,.15)!important}
 .tab.on[data-tab="hot"]{background:rgba(74,222,128,.15)!important}
+/* guest: pie slices are hoverable and say so */
+#donut svg path,#snaps svg path{cursor:pointer;transition:opacity .1s}
+#donut svg path:hover,#snaps svg path:hover{opacity:1!important;stroke:rgba(255,255,255,.85);stroke-width:1.5}
 </style>
 
 <div class="gate" id="gate">
@@ -819,7 +822,7 @@ function renderSnaps(){
   if(!rows.length){ $('snaps').innerHTML = '<p class="sub">Snapshots build up as the archive grows.</p>'; return; }
   $('snaps').innerHTML = rows.map(s => {
     const prof = s.profiles[RISK3] || s.profiles.medium;
-    const top = prof.rows.filter(r=>r.sym!=='CASH').slice(0,3);
+    const top = prof.rows.filter(r=>r.sym!=='CASH');
     let verdict='';
     if(!s.is_now && prof.ret!=null){
       const up=prof.ret>=0, col=up?'var(--green-b)':'var(--red-b)';
