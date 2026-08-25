@@ -690,7 +690,7 @@ document.addEventListener('click', e => {
   if(m.funding && m.funding.value > 0.02) risks.push('a lot of traders are betting with borrowed money right now, which makes any drop faster and uglier');
   if(m.dominance && m.dominance.value > 54) risks.push('money is still favoring Bitcoin over the smaller coins, so the smaller coins keep losing ground');
   if(m.cycle && m.cycle.drawdown < -40) risks.push(`Bitcoin is ${m.cycle.drawdown.toFixed(0)}% below its old record high, and nothing proves the bottom is in yet`);
-  if(m.powerlaw && m.powerlaw.value < -35) opps.push('compared to its own long-term history, Bitcoin is on sale right now');
+  if(m.powerlaw && m.powerlaw.value < -35) opps.push(S.value>=50?'compared to its own long-term history, Bitcoin is on sale right now':'one long-term model (the power law) still says Bitcoin is priced well below where its history says it should be — but after the recent jump, most of our other checks say it is not a bargain today');
   if(m.ma200 && m.ma200.value < 5) opps.push('Bitcoin is sitting in the price zone where every past crash eventually stopped and turned around');
   if(m.rsi && m.rsi.value < 40) opps.push('the market is calm rather than overheated — historically a better time to be buying');
   if(m.fear && m.fear.value < 35) opps.push('most people are scared right now — and historically the scared times were the good times to buy');
@@ -701,9 +701,7 @@ document.addEventListener('click', e => {
     (risks[1] ? `, and ${risks[1]}` : '') + '.' +
     `<br><b style="color:var(--ink)">The good news:</b> ${opps[0] || 'nothing stands out as cheap'}` +
     (opps[1] ? `, and ${opps[1]}` : '') + '.' +
-    `<br><br><b style="color:var(--ink)">Bottom line:</b> ${P.profiles.medium.rows[0].sym} gets the
-     largest share at ${P.profiles.medium.rows[0].pct}%, with
-     ${(P.profiles.medium.rows.find(r=>r.sym==='CASH')||{pct:0}).pct}% deliberately held in cash.`;
+    `<br><br><b style="color:var(--ink)">Bottom line:</b> ${(function(){const rows=P.profiles.medium.rows;const cash=(rows.find(r=>r.sym==='CASH')||{pct:0}).pct;const top=rows.filter(r=>r.sym!=='CASH')[0]||{sym:'BTC',pct:0};return rows[0].sym==='CASH'?`on the default setting we deliberately keep ${cash}% in cash until the trend proves itself — the biggest invested position is ${top.sym} at ${top.pct}%`:`${rows[0].sym} gets the largest share at ${rows[0].pct}%, with ${cash}% deliberately held in cash`;})()}.`;
 
   const SC = [
     ['value','Good price?','Is Bitcoin cheap right now compared to its own past?','Higher = more of a bargain', v=>v>=60?'Looks like a bargain':v>=40?'A fair price — not a steal':'Not cheap right now'],
